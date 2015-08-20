@@ -1,0 +1,36 @@
+From 39de27f81ed861da917155a0552bbf494b33e5ad Mon Sep 17 00:00:00 2001
+From: Lukas Nykryn <lnykryn@redhat.com>
+Date: Thu, 9 Apr 2015 16:09:37 +0200
+Subject: network-functions: fix change_resolv_conf after grep update
+
+
+diff --git a/sysconfig/network-scripts/network-functions b/sysconfig/network-scripts/network-functions
+index 0e86efd..03d62ba 100644
+--- a/sysconfig/network-scripts/network-functions
++++ b/sysconfig/network-scripts/network-functions
+@@ -532,10 +532,10 @@ is_bonding_device ()
+ change_resolv_conf ()
+ {
+     s=$(/bin/grep '^[\ \	]*option' /etc/resolv.conf 2>/dev/null);
+-    if [ "x$s" != "x" ]; then
+-       s="$s"$'\n';
+-    fi;
+     if [ $# -gt 1 ]; then
++       if [ "x$s" != "x" ]; then
++          s="$s"$'\n';
++       fi;
+        n_args=$#;
+        while [ $n_args -gt 0 ]; 
+ 	 do 
+@@ -553,7 +553,7 @@ change_resolv_conf ()
+          done;       
+     elif [ $# -eq 1 ]; then
+        if [ "x$s" != "x" ]; then
+-	  s="$s"$(/bin/grep -vF "$s" $1);
++	  s="$s"$'\n'$(/bin/grep -vF "$s" $1);
+        else
+ 	  s=$(cat $1);
+        fi;
+-- 
+cgit v0.10.2
+
