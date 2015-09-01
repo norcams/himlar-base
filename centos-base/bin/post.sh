@@ -88,7 +88,7 @@ sudo rm -v -rf /var/lib/dhcp/*
 sudo rm -v -rf /var/lib/dhcpd/*
 
 echo "Resetting machine-id"
-sudo truncate --size=0 /etc/machine-id
+sudo truncate --size=0 /etc/machine-id || :
 
 echo "Removing SSH host keys"
 sudo rm -rf /etc/ssh/*_host_*
